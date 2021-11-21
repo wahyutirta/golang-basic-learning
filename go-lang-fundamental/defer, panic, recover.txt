@@ -1,0 +1,16 @@
+Defer
+- used to delay execution of a statement until function exits with
+- useful to group "open" and "close" function together (beware loop)
+- run in LIFO order (last in, first out) 
+- arguments evaluated at time defer is executed, not at time of the called function execution
+Panic
+- Occur when program cannot continue at all
+    - dont use when a file cant be opened, unless it is critical
+    - use for uncoverable events - cannot obtain TCP port for web server
+- Function will stop executing
+    - Deferred funtion will still fire
+- if nothing handle panic, program will exit
+Recover
+- used to recover from panic
+- only useful in deferred funtions
+- current function will not attempt to continue, but higher function in call stack will

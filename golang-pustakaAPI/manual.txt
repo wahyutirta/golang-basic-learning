@@ -1,0 +1,2 @@
+get gin lib for golang https://github.com/gin-gonic/gin
+$ go get -u github.com/gin-gonic/gin
