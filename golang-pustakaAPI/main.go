@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"pustaka-api/book"
 	"pustaka-api/handler"
@@ -23,88 +22,22 @@ func main() {
 	}
 
 	db.AutoMigrate(&book.Book{})
+
+	bookRepository := book.NewRepository(db)
+	bookService := book.NewService(bookRepository)
+
+	book := book.BookRequest{
+		Title:       "Mewarnai Kelinci",
+		Author:      "Dendi Simanjuntak",
+		Description: "Ini Adalah Buku Mewarnai Kelinci Jantan dan Betina untuk Anak Balita",
+		Price:       "500000",
+		Rating:      "5",
+		Discount:    "10",
+	}
+
+	bookService.Create(book)
+
 	router := gin.Default()
-
-	//  CRUD
-
-	// Create data
-	// book := book.Book{}
-
-	// book.Title = "Mewarnai Rusa"
-	// book.Description = "Ini Adalah Buku Mewarnai Rusa Jantan dan Betina"
-	// book.Price = 500000
-	// book.Rating = 5
-	// book.Discount = 10
-
-	// err = db.Create(&book).Error
-
-	// if err != nil {
-	// 	fmt.Println("======================================")
-	// 	fmt.Println("Error creating book record")
-	// 	fmt.Println("======================================")
-	// }
-
-	// one book
-	// var book book.Book
-	// err = db.Debug().First(&book, 1).Error
-
-	// if err != nil {
-	// 	fmt.Println("======================================")
-	// 	fmt.Println("Error finding book record")
-	// 	fmt.Println("======================================")
-	// }
-	// fmt.Printf("book title: %v", book.Title)
-	// fmt.Printf("book object: %v", book)
-
-	// all book
-	// var books []book.Book
-	// err = db.Debug().Find(&books).Error
-
-	// if err != nil {
-	// 	fmt.Println("======================================")
-	// 	fmt.Println("Error finding all book record")
-	// 	fmt.Println("======================================")
-	// }
-
-	// for _, b := range books {
-	// 	fmt.Printf("book title: %v", b.Title)
-	// 	fmt.Printf("book object: %v", b)
-	// }
-
-	// find book with condition
-	// var book book.Book
-
-	// err = db.Debug().Where("Title = ?", "Mewarnai Rusa").First(&book).Error  // -> find one
-	// err = db.Debug().Where("Title = ?", "Mewarnai Rusa").Find(&book).Error
-
-	// if err != nil {
-	// 	fmt.Println("======================================")
-	// 	fmt.Println("Error finding book record")
-	// 	fmt.Println("======================================")
-	// }
-	// fmt.Printf("book title: %v\n", book.Title)
-	// fmt.Printf("book object: %v", book)
-
-	// update book
-	var book book.Book
-	err = db.Debug().Where("Id = ?", "1").Find(&book).Error
-
-	if err != nil {
-		fmt.Println("======================================")
-		fmt.Println("Error finding book record")
-		fmt.Println("======================================")
-	}
-	book.Title = "Mewarnai Rusa (Revised Edition)"
-
-	err = db.Save(&book).Error
-
-	if err != nil {
-		fmt.Println("======================================")
-		fmt.Println("Error finding book record")
-		fmt.Println("======================================")
-	}
-	fmt.Printf("book title: %v\n", book.Title)
-	fmt.Printf("book object: %v", book)
 
 	router.GET("/", handler.RootHandler)
 	router.GET("/hello", handler.HelloHandler)

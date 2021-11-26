@@ -6,6 +6,7 @@ type Book struct {
 	ID          int
 	Title       string
 	Description string
+	Author      string
 	Price       int
 	Rating      int
 	Discount    int

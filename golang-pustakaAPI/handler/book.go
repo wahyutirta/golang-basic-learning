@@ -39,7 +39,7 @@ func QueryHandler(c *gin.Context) {
 }
 
 func PostBooksHandler(c *gin.Context) {
-	var book book.BookInput
+	var book book.BookRequest
 
 	err := c.ShouldBindJSON(&book)
 
