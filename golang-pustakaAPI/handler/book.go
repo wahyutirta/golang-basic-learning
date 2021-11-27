@@ -9,21 +9,46 @@ import (
 	"github.com/go-playground/validator/v10"
 )
 
-func RootHandler(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{
-		"name": "admin",
-		"bio":  "A sistem Admins",
-	})
+type bookHandler struct {
+	bookService book.Service
+	//bookService book.Service
 }
-func HelloHandler(c *gin.Context) {
+
+func NewBookHandler(bookService book.Service) *bookHandler {
+	return &bookHandler{bookService}
+}
+
+func (h *bookHandler) RootHandler(c *gin.Context) {
+	books, err := h.bookService.FindAll()
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"errors": err,
+		})
+		return
+	}
+
+	var bookResponse []book.BookResponse
+
+	for _, b := range books {
+		res := book.BookResponse{
+			ID:          b.ID,
+			Title:       b.Title,
+			Description: b.Description,
+			Author:      b.Author,
+			Price:       b.Price,
+			Rating:      b.Rating,
+			Discount:    b.Discount,
+		}
+		bookResponse = append(bookResponse, res)
+	}
+
 	c.JSON(http.StatusOK, gin.H{
-		"title": "Belajar Golang",
-		"bio":   "Belajar API Golang euui",
+		"data": bookResponse,
 	})
 }
 
 // value by params
-func BooksHandler(c *gin.Context) {
+func (h *bookHandler) BooksHandler(c *gin.Context) {
 	title := c.Param("title")
 	id := c.Param("id")
 
@@ -31,17 +56,17 @@ func BooksHandler(c *gin.Context) {
 }
 
 // value by query
-func QueryHandler(c *gin.Context) {
+func (h *bookHandler) QueryHandler(c *gin.Context) {
 	title := c.Query("title")
 	id := c.Query("id")
 
 	c.JSON(http.StatusOK, gin.H{"id": id, "title": title})
 }
 
-func PostBooksHandler(c *gin.Context) {
-	var book book.BookRequest
+func (h *bookHandler) PostBooksHandler(c *gin.Context) {
+	var bookRequest book.BookRequest
 
-	err := c.ShouldBindJSON(&book)
+	err := c.ShouldBindJSON(&bookRequest)
 
 	if err != nil {
 		// sending error message as json
@@ -55,10 +80,18 @@ func PostBooksHandler(c *gin.Context) {
 		})
 		return
 	}
+
+	book, err := h.bookService.Create(bookRequest)
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"errors": err,
+		})
+		return
+	}
+
 	c.JSON(http.StatusOK, gin.H{
-		"title":  book.Title,
-		"price":  book.Price,
-		"author": book.Author,
+		"data": book,
 	})
 
 }

@@ -26,35 +26,32 @@ func main() {
 	bookRepository := book.NewRepository(db)
 	bookService := book.NewService(bookRepository)
 
-	book := book.BookRequest{
-		Title:       "Mewarnai Kelinci",
-		Author:      "Dendi Simanjuntak",
-		Description: "Ini Adalah Buku Mewarnai Kelinci Jantan dan Betina untuk Anak Balita",
-		Price:       "500000",
-		Rating:      "5",
-		Discount:    "10",
-	}
-
-	bookService.Create(book)
+	bookHandler := handler.NewBookHandler(bookService)
 
 	router := gin.Default()
 
-	router.GET("/", handler.RootHandler)
-	router.GET("/hello", handler.HelloHandler)
-	router.GET("/books/:id/:title", handler.BooksHandler)
+	router.GET("/", bookHandler.RootHandler)
+
+	router.GET("/books/:id/:title", bookHandler.BooksHandler)
 	// localhost:8080/query?id=1&title=bumi -> query with multiple params separated by &
-	router.GET("/query", handler.QueryHandler)
-	router.POST("/books", handler.PostBooksHandler)
+	router.GET("/query", bookHandler.QueryHandler)
+	router.POST("/books", bookHandler.PostBooksHandler)
 
 	//versioning router
 	v1 := router.Group("/v1")
-	v1.GET("/", handler.RootHandler)
-	v1.GET("/hello", handler.HelloHandler)
-	v1.GET("/books/:id/:title", handler.BooksHandler)
+	v1.GET("/", bookHandler.RootHandler)
+
+	v1.GET("/books/:id/:title", bookHandler.BooksHandler)
 	// localhost:8080/query?id=1&title=bumi -> query with multiple params separated by &
-	v1.GET("/query", handler.QueryHandler)
-	v1.POST("/books", handler.PostBooksHandler)
+	v1.GET("/query", bookHandler.QueryHandler)
+	v1.POST("/books", bookHandler.PostBooksHandler)
 
 	router.Run(":8080")
 
+	//main
+	//handler
+	//service
+	//repository
+	//db
+	//mysql
 }
