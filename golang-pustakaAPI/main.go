@@ -30,12 +30,14 @@ func main() {
 
 	router := gin.Default()
 
-	router.GET("/", bookHandler.RootHandler)
+	router.GET("/books", bookHandler.RootHandler)
 
+	router.GET("/books/:id", bookHandler.GetBook)
 	router.GET("/books/:id/:title", bookHandler.BooksHandler)
 	// localhost:8080/query?id=1&title=bumi -> query with multiple params separated by &
 	router.GET("/query", bookHandler.QueryHandler)
 	router.POST("/books", bookHandler.PostBooksHandler)
+	router.PUT("/books/:id", bookHandler.UpdateBook)
 
 	//versioning router
 	v1 := router.Group("/v1")
