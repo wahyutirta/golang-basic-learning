@@ -38,6 +38,7 @@ func main() {
 	router.GET("/query", bookHandler.QueryHandler)
 	router.POST("/books", bookHandler.PostBooksHandler)
 	router.PUT("/books/:id", bookHandler.UpdateBook)
+	router.DELETE("/books/:id", bookHandler.DeleteBook)
 
 	//versioning router
 	v1 := router.Group("/v1")

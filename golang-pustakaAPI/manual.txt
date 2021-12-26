@@ -1,2 +1,23 @@
 get gin lib for golang https://github.com/gin-gonic/gin
 $ go get -u github.com/gin-gonic/gin
+
+/post http://localhost:port/books
+{
+    "title" : "rusa dan laut",
+    "description" : "rusa jantan mencari laut dan arti hidupnya",
+    "author" : "rusa jantan dan kawan kawan",
+    "rating" : 5,
+    "discount" : 10000,
+    "price" : 100000
+
+}
+/put http://localhost:port/books/:id
+{
+    "title" : "rusa dan laut",
+    "description" : "rusa jantan mencari laut dan arti hidupnya",
+    "author" : "rusa jantan dan kawan kawan",
+    "rating" : 4,
+    "discount" : 10000,
+    "price" : 150000
+
+}
