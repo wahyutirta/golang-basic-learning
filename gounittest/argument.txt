@@ -1,0 +1,13 @@
+D:\gounittest>go test ./... -short             
+ok      gounittest      0.047s
+
+D:\gounittest>go test ./...       
+ok      gounittest      5.041s
+
+D:\gounittest>go test      
+PASS
+ok      gounittest      5.045s
+
+D:\gounittest>go test -short
+PASS
+ok      gounittest      0.034s
