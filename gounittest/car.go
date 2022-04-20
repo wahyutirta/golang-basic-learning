@@ -24,11 +24,11 @@ type Car struct {
 
 func (c *Car) Speed() int {
 	defaultSpeed := 80
-	// v := c.Speeder.MaxSpeed()
-	if c.Speeder.MaxSpeed() >= defaultSpeed {
+	v := c.Speeder.MaxSpeed()
+	if v >= defaultSpeed {
 		return c.Speeder.MaxSpeed()
 	}
-	if c.Speeder.MaxSpeed() <= 20 {
+	if v <= 20 {
 		return 20
 	}
 	return defaultSpeed

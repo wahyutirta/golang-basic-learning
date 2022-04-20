@@ -91,4 +91,6 @@ func TestCar_Mock(t *testing.T) {
 
 	v := car.Speed()
 	assert.Equal(t, 20, v)
+
+	mock.AssertNumberOfCalls(t, "MaxSpeed", 1)
 }

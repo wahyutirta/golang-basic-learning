@@ -11,3 +11,8 @@ ok      gounittest      5.045s
 D:\gounittest>go test -short
 PASS
 ok      gounittest      0.034s
+
+third party test
+eg case upload using aws S3
+    -mocking third party library so unit testing dont have to use real third party cridential
+        assuming there are no errors from third party)
