@@ -1,8 +1,10 @@
 package main
 
 import (
+	"strings"
 	"testing"
 
+	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/s3"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
@@ -22,7 +24,16 @@ func TestUpload_Mock(t *testing.T) {
 	u := Uploader{
 		svc: m,
 	}
-	m.On("PutObject", mock.Anything).Return(&s3.PutObjectOutput{}, nil)
+	// m.On("PutObject", mock.Anything).Return(&s3.PutObjectOutput{}, nil)
+	m.On("PutObject", &s3.PutObjectInput{
+		Body:    aws.ReadSeekCloser(strings.NewReader("c:\\HappyFace.jpg")),
+		Bucket:  aws.String("examplebucket"),
+		Key:     aws.String("HappyFace.jpg"),
+		Tagging: aws.String("key1=value1&key2=value2"),
+	}).Return(&s3.PutObjectOutput{}, nil)
 	err := u.Upload()
-	assert.NoError(t, err)
+	assert.NoError(t, err) // expect no error on third party
+
+	m.AssertExpectations(t)
+	// test PutObject func to expect PutObjectInput to receive specific object args and return specific value
 }
